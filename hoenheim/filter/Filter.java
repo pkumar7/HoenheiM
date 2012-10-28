@@ -13,7 +13,7 @@ public class Filter
 
         for( i = 0; i < input.length(); ++i )
         {
-            if( Character.isLetter(input.charAt(i)) ) {
+            if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) ) {
                 output += input.charAt(i);
             }
         }
