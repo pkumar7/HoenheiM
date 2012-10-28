@@ -6,6 +6,7 @@ public class Encoder
    {
       /*
       Encode : / # [ ] @
+      ! $ & ' ( ) * + , ; =
       */
       int i = 0;
       String output = "";
@@ -17,7 +18,18 @@ public class Encoder
               input.charAt(i) == '#' ||
               input.charAt(i) == '[' ||
               input.charAt(i) == ']' ||
-              input.charAt(i) == '@' )
+              input.charAt(i) == '@' ||
+              input.charAt(i) == '!' ||
+              input.charAt(i) == '$' ||
+              input.charAt(i) == '&' ||
+              input.charAt(i) == '\'' ||
+              input.charAt(i) == '(' ||
+              input.charAt(i) == ')' ||
+              input.charAt(i) == '*' ||
+              input.charAt(i) == '+' ||
+              input.charAt(i) == ',' ||
+              input.charAt(i) == ';' ||
+              input.charAt(i) == '=' )
          {
             String hex;
             int ordinate = input.charAt(i) - '0';
