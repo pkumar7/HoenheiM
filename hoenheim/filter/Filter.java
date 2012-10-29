@@ -59,5 +59,19 @@ public class Filter
        return output;
     }
     
+    public String filteraddress(String input)
+    {
+        int i = 0;
+        String output = "";
+        
+        //Consider the usage of other different values in address
+
+        for ( i = 0; i<input.length(); ++i)
+        {
+            if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) || input.charAt(i) == ' ' )
+                output +=input.charAt(i);
+        }
+        return output;
+    }
 
 }
