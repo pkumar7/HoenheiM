@@ -1,0 +1,1 @@
+# Use of "/" may lead to path traversal. Encoding of values need to be done i.e. before output to url "urlencode" and before output to html "htmlencode".
