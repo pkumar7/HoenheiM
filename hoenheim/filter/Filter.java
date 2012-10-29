@@ -108,7 +108,7 @@ public class Filter
         {
               if( input.charAt(i) != '\'' && input.charAt(i) != ',' && input.charAt(i) != ';' &&
                   input.charAt(i) != ',' && input.charAt(i) != '\\' &&
-                  input.charAt(i) - '0' > 1F && input.charAt(i) - '0' < 0x80 )
+                  input.charAt(i) - '0' > 0x1F && input.charAt(i) - '0' < 0x80 )
                  output += input.charAt(i);
         }
         return output;
