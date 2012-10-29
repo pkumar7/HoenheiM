@@ -58,6 +58,40 @@ public class Filter
        }
        return output;
     }
-    
 
+    public String contentDispositionHeaderFilter(String input, boolean isLatin)
+    {
+       /* Content disposition headers might contain user controlled
+          filenames. 
+          For non latin characters,
+            refer 2047 or 2231 or url style percentage encoding
+            filter out 0x00 to 0x1F control characters
+            escape semicolons, backslashes and quotes
+       */
+          int i = 0;
+          String output = "";
+
+          if(isLatin)
+          {
+             for ( i = 0; i < input.length(); ++i )
+             {
+                if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) 
+                     || input.charAt(i) == '.' || input.charAt(i) == '-' || input.charAt(i) == '_')
+                   output += input.charAt(i);
+             }
+          }
+          
+          else
+          {
+             for ( i = 0; i < input.length(); ++i )
+             {
+                else if( input.charAt(i) - '0' > 0x1F && input.charAt(i) !=';' &&
+                    input.charAt(i) != '\\' && input.charAt(i) != '\'' && input.charAt(i) != '"')
+                {
+                   output += input.charAt(i);
+                }
+             }
+          }
+          return output;
+       }
 }
