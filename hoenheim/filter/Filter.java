@@ -93,5 +93,19 @@ public class Filter
              }
           }
           return output;
-       }
+     }
+     public String filterCookies(String input)
+     {
+        /* Filter characters from 0x00 - 0x1F(control characters)
+        and high bit characters(0x80-0xFF), stray quotes, commas, semicolons,
+        backslashes
+        */
+        for ( i = 0; i < input.length(); ++i )
+        {
+              if( input.charAt(i) != '\'' && input.charAt(i) != ',' && input.charAt(i) != ';' &&
+                  input.charAt(i) != ',' && input.charAt(i) != '\\' &&
+                  input.charAt(i) - '0' > 1F && input.charAt(i) - '0' < 0x80 )
+                 output += input.charAt(i);
+        }
+      }
 }
