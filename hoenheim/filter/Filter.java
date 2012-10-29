@@ -59,7 +59,7 @@ public class Filter
        return output;
     }
     
-    public String filteraddress(String input)
+    public String filterAddress(String input)
     {
         int i = 0;
         String output = "";
@@ -68,8 +68,19 @@ public class Filter
 
         for ( i = 0; i<input.length(); ++i)
         {
-            if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) || input.charAt(i) == ' ' )
-                output +=input.charAt(i);
+            
+            if( input.charAt(i) == '\'' )
+                output += '/';
+                
+            if( Character.isLetter(input.charAt(i)) ||
+                Character.isDigit(input.charAt(i))  ||
+                input.charAt(i) == ' '              ||
+                input.charAt(i) == '.'              ||
+                input.charAt(i) == '-'              ||
+                input.charAt(i) == ','              ||
+                input.charAt(i) == '/' )
+                
+                output += input.charAt(i);
         }
         return output;
     }
