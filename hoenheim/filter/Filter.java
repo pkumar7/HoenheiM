@@ -59,6 +59,32 @@ public class Filter
        return output;
     }
 
+    public String filterAddress(String input)
+    {
+        int i = 0;
+        String output = "";
+        
+        //Consider the usage of other different values in address
+
+        for ( i = 0; i<input.length(); ++i)
+        {
+            
+            if( input.charAt(i) == '\'' )
+                output += '/';
+                
+            if( Character.isLetter(input.charAt(i)) ||
+                Character.isDigit(input.charAt(i))  ||
+                input.charAt(i) == ' '              ||
+                input.charAt(i) == '.'              ||
+                input.charAt(i) == '-'              ||
+                input.charAt(i) == ','              ||
+                input.charAt(i) == '/' )
+                
+                output += input.charAt(i);
+        }
+        return output;
+    }
+
     public String contentDispositionHeaderFilter(String input, boolean isLatin)
     {
        /* Content disposition headers might contain user controlled
@@ -85,7 +111,7 @@ public class Filter
           {
              for ( i = 0; i < input.length(); ++i )
              {
-                else if( input.charAt(i) - '0' > 0x1F && input.charAt(i) !=';' &&
+                if( input.charAt(i) - '0' > 0x1F && input.charAt(i) !=';' &&
                     input.charAt(i) != '\\' && input.charAt(i) != '\'' && input.charAt(i) != '"')
                 {
                    output += input.charAt(i);
