@@ -13,7 +13,8 @@ public class Encoder
       
       for ( i = 0; i < input.length(); ++i )
       {
-         if ( input.charAt(i) == ':' || 
+           if ( input.charAt(i) == "[^a-zA-Z\d\s]" )
+       /*  if ( input.charAt(i) == ':' || 
               input.charAt(i) == '/' ||
               input.charAt(i) == '#' ||
               input.charAt(i) == '[' ||
@@ -29,7 +30,7 @@ public class Encoder
               input.charAt(i) == '+' ||
               input.charAt(i) == ',' ||
               input.charAt(i) == ';' ||
-              input.charAt(i) == '=' )
+              input.charAt(i) == '=' )  */                       
          {
             String hex;
             int ordinate = input.charAt(i) - '0';
