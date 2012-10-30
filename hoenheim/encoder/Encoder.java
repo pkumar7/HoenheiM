@@ -9,7 +9,7 @@ public class Encoder
       ! $ & ' ( ) * + , ; =
       */
       int i = 0;
-      String output = "";
+      StringBuilder output = new StringBuilder();
       
       for ( i = 0; i < input.length(); ++i )
       {
@@ -34,11 +34,11 @@ public class Encoder
             String hex;
             int ordinate = input.charAt(i) - '0';
             hex = Integer.toHexString(ordinate);
-            output += "%" + hex;
+            output.append("%" + hex);
          }
          else
-            output += input.charAt(i);
+            output.append(input.charAt(i));
       }
-      return output;
+      return output.toString();
    }
 }

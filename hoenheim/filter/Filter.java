@@ -9,60 +9,60 @@ public class Filter
       */
     {
         int i = 0;
-        String output = "";
+        StringBuilder output = new StringBuilder();
 
         for( i = 0; i < input.length(); ++i )
         {
             if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) ) {
-                output += input.charAt(i);
+                output.append(input.charAt(i));
             }
         }
-        return output;
+        return output.toString();
     }
     
     public String filterPhonenumber(String input)
     {
         int i = 0;
-        String output = "";
+        StringBuilder output = new StringBuilder();
         
         for ( i = 0; i < input.length(); ++i )
         {
             if( input.charAt(i) == '+' || Character.isDigit(input.charAt(i)) )
-                output += input.charAt(i);
+                output.append(input.charAt(i));
         }
-        return output;
+        return output.toString();
     }
     
     public String alphabetsOnlyFilter(String input)
     {
        int i = 0;
-       String output = "";
+       StringBuilder output = new StringBuilder();
        
        for ( i = 0; i < input.length(); ++i )
        {
           if( Character.isLetter(input.charAt(i)) )
-             output += input.charAt(i);
+             output.append(input.charAt(i));
          }
-         return output;
+         return output.toString();
      }
 
     public String alphanumericsOnlyFilter(String input)
     {
        int i = 0;
-       String output = "";
+       StringBuilder output = new StringBuilder();
 
        for ( i = 0; i < input.length(); ++i )
        {
           if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) )
-             output += input.charAt(i);
+             output.append(input.charAt(i));
        }
-       return output;
+       return output.toString();
     }
 
     public String filterAddress(String input)
     {
         int i = 0;
-        String output = "";
+        StringBuilder output = new StringBuilder();
         
         //Consider the usage of other different values in address
 
@@ -70,7 +70,7 @@ public class Filter
         {
             
             if( input.charAt(i) == '\'' )
-                output += '/';
+                output.append('/');
                 
             if( Character.isLetter(input.charAt(i)) ||
                 Character.isDigit(input.charAt(i))  ||
@@ -79,10 +79,9 @@ public class Filter
                 input.charAt(i) == '-'              ||
                 input.charAt(i) == ','              ||
                 input.charAt(i) == '/' )
-                
-                output += input.charAt(i);
+                  output.append(input.charAt(i));
         }
-        return output;
+        return output.toString();
     }
 
     public String contentDispositionHeaderFilter(String input, boolean isLatin)
@@ -95,7 +94,7 @@ public class Filter
             escape semicolons, backslashes and quotes
        */
           int i = 0;
-          String output = "";
+          StringBuilder output = new StringBuilder();
 
           if(isLatin)
           {
@@ -103,7 +102,7 @@ public class Filter
              {
                 if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) 
                      || input.charAt(i) == '.' || input.charAt(i) == '-' || input.charAt(i) == '_')
-                   output += input.charAt(i);
+                   output.append(input.charAt(i));
              }
           }
           
@@ -114,11 +113,11 @@ public class Filter
                 if( input.charAt(i) - '0' > 0x1F && input.charAt(i) !=';' &&
                     input.charAt(i) != '\\' && input.charAt(i) != '\'' && input.charAt(i) != '"')
                 {
-                   output += input.charAt(i);
+                   output.append(input.charAt(i));
                 }
              }
           }
-          return output;
+          return output.toString();
      }
 
      public String filterCookies(String input)
@@ -128,15 +127,15 @@ public class Filter
         backslashes
         */
         int i = 0;
-        String output = "";
+        StringBuilder output = new StringBuilder();
         
         for ( i = 0; i < input.length(); ++i )
         {
               if( input.charAt(i) != '\'' && input.charAt(i) != ',' && input.charAt(i) != ';' &&
                   input.charAt(i) != ',' && input.charAt(i) != '\\' &&
                   input.charAt(i) - '0' > 0x1F && input.charAt(i) - '0' < 0x80 )
-                 output += input.charAt(i);
+                 output.append(input.charAt(i));
         }
-        return output;
+        return output.toString();
       }
 }
