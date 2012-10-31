@@ -44,15 +44,18 @@ public class Encoder
    
    public String encodeLocationHeaders(String input)
    {
+      // TODO : Need to find appropriate kind of encoding. Entity encoding is
+      // probably not the right way.
       int i = 0;
       StringBuilder output = new StringBuilder();
       
       for( i = 0; i < input.length(); ++i )
       {
          if ( input.charAt(i) == ';' )
-            output.append(Integer.toHexString(input.charAt(i) - '0'));
+            output.append("&#x" + (input.charAt(i) - '0'));
       }
       return output.toString();
    }
+   
 
 }
