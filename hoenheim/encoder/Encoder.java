@@ -57,5 +57,14 @@ public class Encoder
       return output.toString();
    }
    
+   public String encodeRawInsideXMLTag(String input)
+   {
+      /* 
+      Raw data that contains even < and & can be safely used inside
+      an arbitrary XML tag by encapsulating it inside
+      <![CDATA[    ....   ]]>
+      */
+      return "<![CDATA[" + input + "]]>";
+   }
 
 }
