@@ -8,36 +8,35 @@ public class Encoder
       Encode : / # [ ] @
       ! $ & ' ( ) * + , ; =
       */
-      int i = 0;
       StringBuilder output = new StringBuilder();
       
-      for ( i = 0; i < input.length(); ++i )
+      for ( char c : input.toCharArray() )
       {
-         if ( input.charAt(i) == ':' || 
-              input.charAt(i) == '/' ||
-              input.charAt(i) == '#' ||
-              input.charAt(i) == '[' ||
-              input.charAt(i) == ']' ||
-              input.charAt(i) == '@' ||
-              input.charAt(i) == '!' ||
-              input.charAt(i) == '$' ||
-              input.charAt(i) == '&' ||
-              input.charAt(i) == '\'' ||
-              input.charAt(i) == '(' ||
-              input.charAt(i) == ')' ||
-              input.charAt(i) == '*' ||
-              input.charAt(i) == '+' ||
-              input.charAt(i) == ',' ||
-              input.charAt(i) == ';' ||
-              input.charAt(i) == '=' )
+         if ( c == ':' || 
+              c == '/' ||
+              c == '#' ||
+              c == '[' ||
+              c == ']' ||
+              c == '@' ||
+              c == '!' ||
+              c == '$' ||
+              c == '&' ||
+              c == '\'' ||
+              c == '(' ||
+              c == ')' ||
+              c == '*' ||
+              c == '+' ||
+              c == ',' ||
+              c == ';' ||
+              c == '=' )
          {
             String hex;
-            int ordinate = input.charAt(i) - '0';
+            int ordinate = c - '0';
             hex = Integer.toHexString(ordinate);
             output.append("%" + hex);
          }
          else
-            output.append(input.charAt(i));
+            output.append(c);
       }
       return output.toString();
    }
@@ -46,13 +45,12 @@ public class Encoder
    {
       // TODO : Need to find appropriate kind of encoding. Entity encoding is
       // probably not the right way.
-      int i = 0;
       StringBuilder output = new StringBuilder();
       
-      for( i = 0; i < input.length(); ++i )
+      for( char c : input.toCharArray() )
       {
-         if ( input.charAt(i) == ';' )
-            output.append("&#x" + (input.charAt(i) - '0'));
+         if ( c == ';' )
+            output.append("&#x" + (c - '0'));
       }
       return output.toString();
    }
@@ -77,19 +75,18 @@ public class Encoder
       NOTE : this is for JS inside string in HTML, NOT XHTML.
       For XHTML, you need to make sure the script block is inside a CDATA!!!
       */
-      int i = 0;
       StringBuilder output = new StringBuilder();
       
-      for( i = 0; i < input.length(); ++i )
+      for( char c : input.toCharArray() )
       {
-         if( input.charAt(i) == '<' )
+         if( c == '<' )
             output.append("&lt;");
-         else if ( input.charAt(i) == '>' )
+         else if ( c == '>' )
             output.append("&gt;");
-         else if ( input.charAt(i) == '&' )
+         else if ( c == '&' )
             output.append("&amp;");
-         else if ( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) )
-            output.append("&#x" + Integer.toHexString(input.charAt(i) - '0'));
+         else if ( Character.isLetter(c) || Character.isDigit(c) )
+            output.append("&#x" + Integer.toHexString(c - '0'));
       }
       return output.toString();
    }

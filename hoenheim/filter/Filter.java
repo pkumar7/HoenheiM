@@ -8,13 +8,12 @@ public class Filter
             accept an optional blacklist
       */
     {
-        int i = 0;
         StringBuilder output = new StringBuilder();
 
-        for( i = 0; i < input.length(); ++i )
+        for( char c : input.toCharArray() )
         {
-            if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) ) {
-                output.append(input.charAt(i));
+            if( Character.isLetter(c) || Character.isDigit(c) ) {
+                output.append(c);
             }
         }
         return output.toString();
@@ -22,64 +21,60 @@ public class Filter
     
     public String filterPhonenumber(String input)
     {
-        int i = 0;
         StringBuilder output = new StringBuilder();
         
-        for ( i = 0; i < input.length(); ++i )
+        for ( char c : input.toCharArray() )
         {
-            if( input.charAt(i) == '+' || Character.isDigit(input.charAt(i)) )
-                output.append(input.charAt(i));
+            if( c == '+' || Character.isDigit(c) )
+                output.append(c);
         }
         return output.toString();
     }
     
     public String alphabetsOnlyFilter(String input)
     {
-       int i = 0;
        StringBuilder output = new StringBuilder();
        
-       for ( i = 0; i < input.length(); ++i )
+       for ( char c : input.toCharArray() )
        {
-          if( Character.isLetter(input.charAt(i)) )
-             output.append(input.charAt(i));
+          if( Character.isLetter(c) )
+             output.append(c);
          }
          return output.toString();
      }
 
     public String alphanumericsOnlyFilter(String input)
     {
-       int i = 0;
        StringBuilder output = new StringBuilder();
 
-       for ( i = 0; i < input.length(); ++i )
+       for ( char c : input.toCharArray() )
        {
-          if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) )
-             output.append(input.charAt(i));
+          if( Character.isLetter(c) || Character.isDigit(c) )
+             output.append(c);
        }
        return output.toString();
     }
 
     public String filterAddress(String input)
     {
-        int i = 0;
         StringBuilder output = new StringBuilder();
         
         //Consider the usage of other different values in address
 
-        for ( i = 0; i<input.length(); ++i)
+        for ( char c : input.toCharArray() )
         {
             
-            if( input.charAt(i) == '\'' )
+            if( c == '\'' )
                 output.append('/');
                 
-            if( Character.isLetter(input.charAt(i)) ||
-                Character.isDigit(input.charAt(i))  ||
-                input.charAt(i) == ' '              ||
-                input.charAt(i) == '.'              ||
-                input.charAt(i) == '-'              ||
-                input.charAt(i) == ','              ||
-                input.charAt(i) == '/' )
-                  output.append(input.charAt(i));
+            if( Character.isLetter(c) ||
+                Character.isDigit(c)  ||
+                c == ' '              ||
+                c == '.'              ||
+                c == '-'              ||
+                c == ','              ||
+                c == '/' )
+                  output.append(c);
         }
         return output.toString();
     }
@@ -93,27 +88,26 @@ public class Filter
             filter out 0x00 to 0x1F control characters
             escape semicolons, backslashes and quotes
        */
-          int i = 0;
           StringBuilder output = new StringBuilder();
 
           if(isLatin)
           {
-             for ( i = 0; i < input.length(); ++i )
+             for ( char c : input.toCharArray() )
              {
-                if( Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)) 
-                     || input.charAt(i) == '.' || input.charAt(i) == '-' || input.charAt(i) == '_')
-                   output.append(input.charAt(i));
+                if( Character.isLetter(c) || Character.isDigit(c) 
+                     || c == '.' || c == '-' || c == '_')
+                   output.append(c);
              }
           }
           
           else
           {
-             for ( i = 0; i < input.length(); ++i )
+             for ( char c : input.toCharArray() )
              {
-                if( input.charAt(i) - '0' > 0x1F && input.charAt(i) !=';' &&
-                    input.charAt(i) != '\\' && input.charAt(i) != '\'' && input.charAt(i) != '"')
+                if( c - '0' > 0x1F && c !=';' &&
+                    c != '\\' && c != '\'' && c != '"')
                 {
-                   output.append(input.charAt(i));
+                   output.append(c);
                 }
              }
           }
@@ -126,15 +120,14 @@ public class Filter
         and high bit characters(0x80-0xFF), stray quotes, commas, semicolons,
         backslashes
         */
-        int i = 0;
         StringBuilder output = new StringBuilder();
         
-        for ( i = 0; i < input.length(); ++i )
+        for ( char c : input.toCharArray() )
         {
-              if( input.charAt(i) != '\'' && input.charAt(i) != ',' && input.charAt(i) != ';' &&
-                  input.charAt(i) != ',' && input.charAt(i) != '\\' &&
-                  input.charAt(i) - '0' > 0x1F && input.charAt(i) - '0' < 0x80 )
-                 output.append(input.charAt(i));
+              if( c != '\'' && c != ',' && c != ';' &&
+                  c != ',' && c != '\\' &&
+                  c - '0' > 0x1F && c - '0' < 0x80 )
+                 output.append(c);
         }
         return output.toString();
       }
@@ -145,34 +138,33 @@ public class Filter
          and the right angular brackets.
          in second pass, encode/filter any remaining tags.
          */
-         int i = 0;
          StringBuilder tempOutput = new StringBuilder();
          StringBuilder output = new StringBuilder();
          boolean insideTag = false;
          
          // First pass
-         for ( i = 0; i < input.length(); ++i )
+         for ( char c : input.toCharArray() )
          {
-            if ( input.charAt(i) == '<' )
+            if ( c == '<' )
             {
                insideTag = true;
                continue;
             }
-            if ( input.charAt(i) == '>' )
+            if ( c == '>' )
             {
                insideTag = false;
                continue;
             }
             if ( ! insideTag )
-               tempOutput.append(input.charAt(i));
+               tempOutput.append(c);
          } 
          
          // Second pass
-         for( i = 0; i < tempOutput.length(); ++i )
+         for( char c : input.toCharArray() )
          {
-            if ( tempOutput.charAt(i) == '<' )
+            if ( c == '<' )
                output.append("&lt;");
-            else if ( tempOutput.charAt(i) == '>' )
+            else if ( c == '>' )
                output.append("&gt;");
          }
          return output.toString();
