@@ -138,4 +138,43 @@ public class Filter
         }
         return output.toString();
       }
+      
+      public String htmltoPlaintext(String input)
+      {
+         /* in first pass, remove well formed tags, i.e. left angular bracket, some text
+         and the right angular brackets.
+         in second pass, encode/filter any remaining tags.
+         */
+         int i = 0;
+         StringBuilder tempOutput = new StringBuilder();
+         StringBuilder output = new StringBuilder();
+         boolean insideTag = false;
+         
+         // First pass
+         for ( i = 0; i < input.length(); ++i )
+         {
+            if ( input.charAt(i) == '<' )
+            {
+               insideTag = true;
+               continue;
+            }
+            if ( input.charAt(i) == '>' )
+            {
+               insideTag = false;
+               continue;
+            }
+            if ( ! insideTag )
+               tempOutput.append(input.charAt(i));
+         } 
+         
+         // Second pass
+         for( i = 0; i < tempOutput.length(); ++i )
+         {
+            if ( tempOutput.charAt(i) == '<' )
+               output.append("&lt;");
+            else if ( tempOutput.charAt(i) == '>' )
+               output.append("&gt;");
+         }
+         return output.toString();
+      }
 }
