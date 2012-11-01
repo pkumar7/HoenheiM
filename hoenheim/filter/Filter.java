@@ -166,6 +166,8 @@ public class Filter
                output.append("&lt;");
             else if ( c == '>' )
                output.append("&gt;");
+            else if ( c == '&' )
+               output.append("&amp;");
          }
          return output.toString();
       }
