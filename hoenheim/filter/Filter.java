@@ -150,11 +150,12 @@ public class Filter
                insideTag = true;
                continue;
             }
-            if ( c == '>' )
+            else if ( c == '>' )
             {
                insideTag = false;
                continue;
             }
+
             if ( ! insideTag )
                tempOutput.append(c);
          } 
