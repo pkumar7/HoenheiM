@@ -132,7 +132,7 @@ public class Filter
         return output.toString();
       }
       
-      public String htmltoPlaintext(String input)
+      public String htmlToPlaintext(String input)
       {
          /* in first pass, remove well formed tags, i.e. left angular bracket, some text
          and the right angular brackets.
