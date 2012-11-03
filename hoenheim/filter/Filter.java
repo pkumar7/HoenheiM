@@ -307,11 +307,6 @@ public class Filter
                               break;
                          }
                     }
-                System.out.println("host_name:- " + filtered_host_name);
-                System.out.println("path_section:- " + filtered_path_section);
-                System.out.println("query_section:- " + filtered_query_section);
-                System.out.println("fragment_id:- " + filtered_fragment_identifier);
-                //filtered_url = url_scheme + "//" + filtered_host_name + "/" + filtered_path_section + "?" + filtered_query_section 
                 break;
                 }
             }
@@ -336,7 +331,6 @@ public class Filter
                 filtered_url.append("#");
                 filtered_url.append(filtered_fragment_identifier);
             }
-            System.out.println(filtered_url);
           
         }
         //return filtered_url;
