@@ -9,10 +9,11 @@ public class Encoder
       ! $ & ' ( ) * + , ; =
       */
       StringBuilder output = new StringBuilder();
-      
       for ( char c : input.toCharArray() )
       {
-         if ( c == ':' || 
+         //if c == "[:/#\\[\\]@!$\\&\\\\(\\)\\*\\+,;=]"
+         if( Character.toString(c).matches("[:/#\\[\\]@!$\\&\\\\(\\)\\*\\+,;=-]") )
+         /*if ( c == ':' || 
               c == '/' ||
               c == '#' ||
               c == '[' ||
@@ -28,7 +29,7 @@ public class Encoder
               c == '+' ||
               c == ',' ||
               c == ';' ||
-              c == '=' )
+              c == '=' )    */
          {
             String hex;
             int ordinate = c - '0';
