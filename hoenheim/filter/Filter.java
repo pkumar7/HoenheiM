@@ -175,6 +175,13 @@ public class Filter
             
     public String filterUrl(String input)
     {
+        // Disallow or explicitly rewrite relative urls to absolute reference
+        // Permit only known prefixes like http://, https:// and ftp://
+        // Hostname should contain only alphanumerics, '-' and '.' 
+        // and should only be followed by "/", "?", "#", or end of string
+        // The best method would be to filter url would be to fully parse the url, validate all sections
+        // remove all undesired values and finally reserialize them into a well escaped representation
+        
         StringBuilder filtered_query_section = new StringBuilder();
         StringBuilder filtered_host_name = new StringBuilder();
         StringBuilder filtered_path_section = new StringBuilder();
@@ -200,13 +207,18 @@ public class Filter
             for (int i = 0; i < url_rest.length(); ++i)
             {
                 char symbol = url_rest.charAt(i);
-                // most browsers will also accept “ \” as a delimiter in place of a forward slash
+                // most browsers will also accept “\” as a delimiter in place of a forward slash
                 if( symbol == '\'' )
                     symbol = '/';
-                
-                if( symbol == '/' || symbol == '?' || symbol == '#' )
+                String authority_section;
+                if( symbol == '/' || symbol == '?' || symbol == '#' || i == (url_rest.length() - 1) )
                 {
-                    String authority_section = url_rest.substring(0, url_rest.indexOf(symbol));
+                    authority_section = url_rest.substring(0, url_rest.indexOf(symbol));
+                    // check if we have reached to the end of url and not encountered any of the given delims
+                    if( i == (url_rest.length() - 1) && ( symbol != '/' || symbol != '?' || symbol != '#' ) )
+                    {
+                        authority_section = url_rest.substring(0);
+                    }
                     String host_name = authority_section;
                     for (int k = 0; k < authority_section.length(); ++k)
                     {
