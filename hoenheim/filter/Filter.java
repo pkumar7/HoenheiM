@@ -18,11 +18,11 @@ public class Filter
         }
         return output.toString();
     }
-    
+
     public String filterPhonenumber(String input)
     {
         StringBuilder output = new StringBuilder();
-        
+
         for ( char c : input.toCharArray() )
         {
             if( c == '+' || Character.isDigit(c) )
@@ -30,11 +30,11 @@ public class Filter
         }
         return output.toString();
     }
-    
+
     public String alphabetsOnlyFilter(String input)
     {
        StringBuilder output = new StringBuilder();
-       
+
        for ( char c : input.toCharArray() )
        {
           if( Character.isLetter(c) )
@@ -58,15 +58,15 @@ public class Filter
     public String filterAddress(String input)
     {
         StringBuilder output = new StringBuilder();
-        
+
         //Consider the usage of other different values in address
 
         for ( char c : input.toCharArray() )
         {
-            
+
             if( c == '\'' )
                 output.append('/');
-                
+
             if( Character.isLetter(c) ||
                 Character.isDigit(c)  ||
                 c == ' '              ||
@@ -99,7 +99,7 @@ public class Filter
                    output.append(c);
              }
           }
-          
+
           else
           {
              for ( char c : input.toCharArray() )
@@ -121,7 +121,7 @@ public class Filter
         backslashes
         */
         StringBuilder output = new StringBuilder();
-        
+
         for ( char c : input.toCharArray() )
         {
              if( c != '\'' && c != ',' && c != ';' &&
@@ -131,7 +131,7 @@ public class Filter
         }
         return output.toString();
     }
-      
+
     public String htmlToPlaintext(String input)
         {
         /* in first pass, remove well formed tags, i.e. left angular bracket, some text
@@ -141,7 +141,7 @@ public class Filter
         StringBuilder tempOutput = new StringBuilder();
         StringBuilder output = new StringBuilder();
         boolean insideTag = false;
-         
+
         // First pass
         for ( char c : input.toCharArray() )
         {
@@ -158,8 +158,8 @@ public class Filter
 
             if ( ! insideTag )
                 tempOutput.append(c);
-        } 
-         
+        }
+
          // Second pass
         for( char c : input.toCharArray() )
         {
@@ -172,7 +172,7 @@ public class Filter
         }
         return output.toString();
     }
-            
+
     public String filterUrl(String input)
     {
         StringBuilder filtered_query_section = new StringBuilder();
@@ -192,7 +192,7 @@ public class Filter
             url_scheme.equals("http")    ||
             url_scheme.equals("ftp"))    && 
             url_rest.startsWith("//") )
-            
+
         {
             // Remove first two chars i.e '//' from the url
             url_rest = url_rest.substring(2);
@@ -203,7 +203,7 @@ public class Filter
                 // most browsers will also accept “ \” as a delimiter in place of a forward slash
                 if( symbol == '\'' )
                     symbol = '/';
-                
+
                 if( symbol == '/' || symbol == '?' || symbol == '#' )
                 {
                     String authority_section = url_rest.substring(0, url_rest.indexOf(symbol));
@@ -215,13 +215,13 @@ public class Filter
                         {
                             String login_credentials = authority_section.substring(0, authority_section.indexOf('@'));
                             // Need to further break down login credentials to username and password
-                            
+
                             host_name = authority_section.substring(authority_section.indexOf('@'));
                             //Removing first '@' symbol
                             host_name = host_name.substring(1);
                             break;
                         }
-                    }                 
+                    }
 
                     // Filter host name
                     for ( int j = 0; j < host_name.length(); ++j )
@@ -230,10 +230,10 @@ public class Filter
                                 Character.isDigit(host_name.charAt(j))  ||
                                 host_name.charAt(j) == '-'              ||
                                 host_name.charAt(j) == '.' )
-                          
+
                                     filtered_host_name.append(host_name.charAt(j));
                     }
-                    
+
                     String after_host_section = url_rest.substring(url_rest.indexOf(symbol));
 
                     if( after_host_section.startsWith("/") || after_host_section.startsWith("\\"))
@@ -246,7 +246,7 @@ public class Filter
                               String path_section = after_host_section.substring(0, after_host_section.indexOf(after_host_section.charAt(k)));
                               // Filter the path path_section
                               //TODO: Take each value between "/" filter then join again for better filtering.
-                              
+
                               for ( int j = 0; j < path_section.length(); ++j )
                               {
                                   if( Character.isLetter(path_section.charAt(j)) ||
@@ -254,10 +254,10 @@ public class Filter
                                       path_section.charAt(j) == '-'              ||
                                       path_section.charAt(j) == '_'              ||
                                       path_section.charAt(j) == '/' )
-                                
+
                                           filtered_path_section.append(path_section.charAt(j));
                               }
-                                
+
                               String fragment_identifier = "";
                               if( after_host_section.charAt(k) == '#' )
                               {
@@ -267,7 +267,7 @@ public class Filter
                               {
                                   String query_section = after_host_section.substring(after_host_section.indexOf(after_host_section.charAt(k)));
                                   query_section = query_section.substring(1);
-                                  
+
                                   // If Fragment Identifier is present
                                   for (int l = 0; l < query_section.length(); ++l)
                                   {
@@ -280,7 +280,7 @@ public class Filter
                                       }
                                           //TODO: Filter fragment identifier
                                   }
-                                  
+
                                   // Filter query section
                                   for ( int j = 0; j < query_section.length(); ++j )
                                   {
@@ -288,7 +288,7 @@ public class Filter
                                           Character.isDigit(query_section.charAt(j))  ||
                                           query_section.charAt(j) == '-'              ||
                                           query_section.charAt(j) == '.' )
-                                    
+
                                               filtered_query_section.append(query_section.charAt(j));
                                   }
                               }
@@ -298,12 +298,12 @@ public class Filter
                               {
                                   if( Character.isLetter(fragment_identifier.charAt(j))  ||
                                       Character.isDigit(fragment_identifier.charAt(j)) )
-                                
+
                                           filtered_fragment_identifier.append(fragment_identifier.charAt(j));
                               }
-                              
 
-                                                                
+
+
                               break;
                          }
                     }
@@ -331,11 +331,54 @@ public class Filter
                 filtered_url.append("#");
                 filtered_url.append(filtered_fragment_identifier);
             }
-          
+
         }
         //return filtered_url;
-        return filtered_url.toString();            
+        return filtered_url.toString();
     }
-      
+
+    public String filterForCSSValues(String input)
+    {
+      StringBuilder output = new StringBuilder();
+
+      for ( char c : input.toCharArray() )
+      {
+        if ( c != '\\' || c != '<' || c != '>' || c != '{' || c != '}' ||
+             c > 0x1F )
+        {
+          output.append(c);
+        }
+      }
+      return output.toString();
+    }
+
+    public String filterForStyleParamater(String input)
+    {
+      /* TODO offer encoding functions for this. page 115 */
+      StringBuilder output = new StringBuilder();
+
+      for ( char c : input.toCharArray() )
+      {
+        if ( c != '\\' || c != '<' || c != '>' || c != '{' || c != '}' ||
+             c != '/'  || c > 0x1F )
+        {
+          output.append(c);
+        }
+      }
+      return output.toString();
+    }
+
+    public String filterCSSAttributes(String input)
+    {
+      StringBuilder output = new StringBuilder();
+
+      for ( char c : input.toCharArray() )
+      {
+        if ( Character.isLetter(c) || Character.isDigit(c) )
+          output.append(c);
+      }
+      return output.toString();
+
+    }
 }
 
