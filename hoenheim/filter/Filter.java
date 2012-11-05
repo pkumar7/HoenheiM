@@ -243,7 +243,7 @@ public class Filter
                                     port_number = destination_address.substring(destination_address.indexOf(':'));
                                     port_number = port_number.substring(1);
                                     host_name = destination_address.substring(0, destination_address.indexOf(':'));
-                                    
+                                    break;
                                 }
                             }
                             break;
