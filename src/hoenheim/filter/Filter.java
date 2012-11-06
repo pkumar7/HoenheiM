@@ -200,7 +200,7 @@ public class Filter
             for (int i = 0; i < url_rest.length(); ++i)
             {
                 char symbol = url_rest.charAt(i);
-                // most browsers will also accept â€œ \â€ as a delimiter in place of a forward slash
+                // most browsers will also accept Ò \Ó as a delimiter in place of a forward slash
                 if( symbol == '\'' )
                     symbol = '/';
 
@@ -381,4 +381,3 @@ public class Filter
 
     }
 }
-

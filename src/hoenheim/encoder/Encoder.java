@@ -1,4 +1,12 @@
+/**
+ * 
+ */
 package hoenheim.encoder;
+
+/**
+ * @author eQuiNoX
+ *
+ */
 
 public class Encoder
 {
