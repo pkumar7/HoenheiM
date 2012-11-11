@@ -175,17 +175,24 @@ public class Filter
 
     public String filterUrl(String input)
     {
+        // Disallow or explicitly rewrite relative urls to absolute reference
+        // Permit only known prefixes like http://, https:// and ftp://
+        // Hostname should contain only alphanumerics, '-' and '.' 
+        // and should only be followed by "/", "?", "#", or end of string
+        // The best method would be to filter url would be to fully parse the url, validate all sections
+        // remove all undesired values and finally reserialize them into a well escaped representation
+        // TODO: Implement the following for IPv6 too.
+        
         StringBuilder filtered_query_section = new StringBuilder();
         StringBuilder filtered_host_name = new StringBuilder();
         StringBuilder filtered_path_section = new StringBuilder();
         StringBuilder filtered_fragment_identifier = new StringBuilder();
         StringBuilder filtered_url = new StringBuilder();
 
-        String delim = "[:]+";
-        String[] scheme_and_rest = input.split(delim);
-        String url_scheme = scheme_and_rest[0];
-        url_scheme = (url_scheme.trim()).toString();
-        String url_rest = scheme_and_rest[1];
+        String url_scheme = input.substring(0, input.indexOf(':'));
+        url_scheme = url_scheme.trim();
+        String url_rest = input.substring(input.indexOf(':'));
+        url_rest = url_rest.substring(1);
 
         // Permit only http://, https:// and ftp:// 
         if( (url_scheme.equals("https")  ||
@@ -200,14 +207,23 @@ public class Filter
             for (int i = 0; i < url_rest.length(); ++i)
             {
                 char symbol = url_rest.charAt(i);
-                // most browsers will also accept Ò \Ó as a delimiter in place of a forward slash
+                // most browsers will also accept â€œ\â€ as a delimiter in place of a forward slash
                 if( symbol == '\'' )
                     symbol = '/';
-
-                if( symbol == '/' || symbol == '?' || symbol == '#' )
+                // ';' is also another acceptable authority delimiter in most of the browser
+                // TODO: Implement ';' delimiter confirming its functional details. 
+                if( symbol == '/' || symbol == '?' || symbol == '#' || i == (url_rest.length() - 1) )
                 {
-                    String authority_section = url_rest.substring(0, url_rest.indexOf(symbol));
+                    String authority_section;
+                    authority_section = url_rest.substring(0, url_rest.indexOf(symbol));
+                    // check if we have reached to the end of url and not encountered any of the authority delimiter
+                    if( i == (url_rest.length() - 1) && ( symbol != '/' || symbol != '?' || symbol != '#' ) )
+                    {
+                        authority_section = url_rest.substring(0);
+                    }
                     String host_name = authority_section;
+                    String destination_address;
+                    String port_number = "";
                     for (int k = 0; k < authority_section.length(); ++k)
                     {
                         // TODO handle login credentials part of url.
@@ -216,11 +232,31 @@ public class Filter
                             String login_credentials = authority_section.substring(0, authority_section.indexOf('@'));
                             // Need to further break down login credentials to username and password
 
-                            host_name = authority_section.substring(authority_section.indexOf('@'));
-                            //Removing first '@' symbol
-                            host_name = host_name.substring(1);
+                            destination_address = authority_section.substring(authority_section.indexOf('@'));
+                            destination_address = destination_address.substring(1);
+                            host_name = destination_address;
+                            // check for port number
+                            for (int l = 0; l < destination_address.length(); ++l)
+                            {                            
+                                if( destination_address.charAt(k) == ':' )
+                                {
+                                    port_number = destination_address.substring(destination_address.indexOf(':'));
+                                    port_number = port_number.substring(1);
+                                    host_name = destination_address.substring(0, destination_address.indexOf(':'));
+                                    break;
+                                }
+                            }
                             break;
                         }
+                        // check for port number
+                        if( authority_section.charAt(k) == ':' )
+                        {
+                            port_number = authority_section.substring(authority_section.indexOf(':'));
+                            host_name = authority_section.substring(0, authority_section.indexOf(':'));
+                            port_number = port_number.substring(1);
+                            break;
+                        }
+                        // TODO: Filter the port number
                     }
 
                     // Filter host name
@@ -233,7 +269,7 @@ public class Filter
 
                                     filtered_host_name.append(host_name.charAt(j));
                     }
-
+                    // Modify thr below code line in case symbol is end of string and not one among the authority delim
                     String after_host_section = url_rest.substring(url_rest.indexOf(symbol));
 
                     if( after_host_section.startsWith("/") || after_host_section.startsWith("\\"))
@@ -301,9 +337,6 @@ public class Filter
 
                                           filtered_fragment_identifier.append(fragment_identifier.charAt(j));
                               }
-
-
-
                               break;
                          }
                     }
@@ -315,7 +348,9 @@ public class Filter
             // Add the scheme
             filtered_url.append(url_scheme + "://");
             // Add host name
-            filtered_url.append(filtered_host_name);
+            if( filtered_host_name.length() > 0 )
+                filtered_url.append(filtered_host_name);
+            // To add filtered port number here if exists.
             if( filtered_path_section.length() > 0 )
             {
                 filtered_url.append('/');
