@@ -12,6 +12,7 @@ public class FilterTest extends Filter {
 		assertEquals(filterInstance.filterUsername("<>asdf~!@@#@#%^&*()_=;:'\"''+-/?.,~`\\///asdf234"), "asdfasdf234");
 	}
 	
+	@Test
 	public void testAlphabetsOnlyFilter()
 	{
 		Filter filterInstance = new Filter();
@@ -21,6 +22,7 @@ public class FilterTest extends Filter {
 		assertEquals(filterInstance.alphabetsOnlyFilter("asdf asdf"), "asdfasdf");
 	}
 	
+	@Test
 	public void testFilterPhoneNumber()
 	{
 		Filter filterInstance = new Filter();
@@ -28,6 +30,7 @@ public class FilterTest extends Filter {
 		assertEquals(filterInstance.filterPhonenumber("<script>999onenumber</script>"), "999");
 	}
 	
+	@Test
 	public void testContentDispositionHeaderFilter()
 	{
 		// tests for Latin strings
@@ -47,6 +50,7 @@ public class FilterTest extends Filter {
 	
 	
 	// CSS related method tests
+	@Test
 	public void testFilterForCSSValues()
 	{
 		Filter filterInstance = new Filter();
