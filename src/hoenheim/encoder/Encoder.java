@@ -99,4 +99,61 @@ public class Encoder
       }
       return output.toString();
    }
+   
+   // CSS functions
+   public String encodeCSSStringsAndUrls(String input)
+   {
+	   /* - convert a letter into \xxxxxx where i.e. e => \000065
+	    * or you can have a \x65<space>, inside strings.
+	    * 
+	    * - if there are HTML characters such as <, > etc, do not encode
+	    * using CSS encoding as they are rendered before CSS.
+	    * 
+	    * - IE does not allow this kind of escaping inside url(""); strings
+	    * - #TODO #scanner check if https sites load css files from http
+	    * - You can encode " and \ using another preceding \ BUT do not use this for anything else
+	    * - also escape high bit characters
+	    * - #TODO add stuff for adding URLs into CSS(ch2)
+	    */
+	   StringBuilder output = new StringBuilder();
+	   
+	   for ( char c : input.toCharArray() )
+	   {
+		   switch( c )
+		   {
+		   		case '"':
+		   		case '\'':
+		   			output.append('\\' + c);
+		   			break;
+		   		case '<':
+		   		case '>':
+		   			String temp = Integer.toHexString(c);
+		   			StringBuilder f = new StringBuilder();
+		   			f.append("\\");
+		   			for ( int i = 0; i < 6 - temp.length(); ++i )
+		   			{
+		   				f.append("0");
+		   			}
+		   			f.append(temp);
+		   			output.append(f.toString());
+		   			break;
+		   }
+		   /*
+		   // Control Character or High-Bit Character
+		   if ( c <= 0x1F || c >= 0x8F )
+		   {
+			   String temp = Integer.toHexString(c);
+			   StringBuilder f = new StringBuilder();
+			   f.append("\\");
+			   for ( int i = 0; i < 6 - temp.length(); ++i )
+			   {
+				   f.append("0");
+			   }
+			   f.append(temp);
+			   output.append(f.toString());
+		   }
+		   */		   
+	   }
+	   return output.toString();
+   }
 }
