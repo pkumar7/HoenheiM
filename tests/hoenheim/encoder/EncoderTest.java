@@ -12,10 +12,15 @@ import org.junit.Test;
  *
  */
 public class EncoderTest extends Encoder {
-
+	
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testEncodeCSSStringsAndUrls() {
+		Encoder e = new Encoder();
+		assertEquals(e.encodeCSSStringsAndUrls(""), "");
+		assertEquals(e.encodeCSSStringsAndUrls("<"), "\\00003c");
+		assertEquals(e.encodeCSSStringsAndUrls("<<"), "\\00003c\\00003c");
+		assertEquals(e.encodeCSSStringsAndUrls(">"), "\\00003e");
+		assertEquals(e.encodeCSSStringsAndUrls("this'is"), "this\\'is");
 	}
 
 }
