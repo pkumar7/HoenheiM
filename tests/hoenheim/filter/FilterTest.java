@@ -57,4 +57,43 @@ public class FilterTest extends Filter {
 		assertEquals(filterInstance.filterForCSSValues("\\<>{}"), "");
 	}
 	
+	@Test
+	public void testhtmlToPlaintext()
+	{
+		//Test is getting failed right now.
+		Filter filterInstance = new Filter();
+		assertEquals(filterInstance.htmlToPlaintext("<script>v&al>ue<script>"), "v&amp;al&gt;ue");
+		
+	}
+	@Test
+	public void testUrlFilter()
+	{
+		Filter filterInstance = new Filter();
+		// when everything is given properly in url
+		String url = "https://hostname.com/somepath/somemorepath?query#fragid";
+		String expected_url = "https://hostname.com/somepath/somemorepath?query#fragid";
+		assertEquals(filterInstance.filterUrl(url), expected_url);
+		// when scheme is not recognised
+		url = "httpss://hostname.com/somepath/somemorepath?query#fragid";
+		expected_url = "";
+		assertEquals(filterInstance.filterUrl(url), expected_url);
+		// when scheme is not followed by "//"
+		url = "https:/#hostname.com/somepath/somemorepath?query#fragid";
+		expected_url = "";
+		assertEquals(filterInstance.filterUrl(url), expected_url);
+		//url with undesired values 
+		url = "https://hostna*)(<>me.com/some$^path/som!,.emorepath?que<>ry#fragid";
+		expected_url = "https://hostname.com/somepath/somemorepath?query#fragid";
+		assertEquals(filterInstance.filterUrl(url), expected_url);
+		// when any authority delimiters occur inside host name 
+		url = "https://host?name.com/somepath/somemorepath?query#fragid";
+		expected_url = "https://host?name.comsomepathsomemorepathquery#fragid";
+		assertEquals(filterInstance.filterUrl(url), expected_url);
+		// need to identify values valid for fragment identifier.
+		// using just alphanumerics to be on the safe side.
+		url = "https://host#name.com/somepath/somemorepath?query#fragid";
+		expected_url = "https://host#namecomsomepathsomemorepathqueryfragid";
+		assertEquals(filterInstance.filterUrl(url), expected_url);
+	}
+	
 }
