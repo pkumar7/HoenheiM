@@ -152,8 +152,11 @@ public class Filter
             }
             else if ( c == '>' )
             {
-                insideTag = false;
-                continue;
+            	if( insideTag )
+            	{
+                    insideTag = false;
+                    continue;
+            	}
             }
 
             if ( ! insideTag )
@@ -161,6 +164,7 @@ public class Filter
         }
 
          // Second pass
+        input = tempOutput.toString();
         for( char c : input.toCharArray() )
         {
             if ( c == '<' )
@@ -169,6 +173,10 @@ public class Filter
                 output.append("&gt;");
             else if ( c == '&' )
                 output.append("&amp;");
+            else
+            {
+            	output.append(c);
+            }
         }
         return output.toString();
     }
